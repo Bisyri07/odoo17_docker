@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  santosa-hrms:
+    image: odoo:17
+    ports:
+      - "8081:8069"
+    command: odoo
+    container_name: santosa-hrms
+    depends_on:
+      - postgres-demo
+    volumes:
+      - odoo1-data-santosa-hrms:/var/lib/odoo
+      - ./etc/santosa-hrms:/etc/odoo
+      - ./custom_modules/santosa-hrms:/mnt/extra-addons
+
+  
+  sanbe-hrms:
+    image: odoo:17
+    ports:
+      - "8080:8069"
+    command: odoo
+    container_name: sanbe-hrms
+    depends_on:
+      - postgres-demo
+    volumes:
+      - odoo1-data-sanbe-hrms:/var/lib/odoo
+      - ./etc/sanbe-hrms:/etc/odoo
+      - ./custom_modules/sanbe-hrms:/mnt/extra-addons
+
+
+  postgres-demo:
+    image: postgres:latest
+    container_name: postgres-demo
+    ports:
+      - "5450:5432"
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=postgres
+    # env_file: myenvfile.env
+    volumes:
+      - ./pg-data:/var/lib/pgsql/data/pgdata
+
+
+volumes:
+  odoo1-data-sanbe-hrms:
+  odoo1-data-santosa-hrms:
